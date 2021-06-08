@@ -17,7 +17,7 @@ class FillPlacesTable extends Migration
     {
         $data = [];
 
-        foreach (range(1, 25) as $number) {
+        foreach (range(1, 50) as $number) {
             $data[]['title'] = $number;
         }
 

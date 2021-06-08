@@ -16,7 +16,7 @@ class CreateDeliveryMethodsTable extends Migration
         Schema::create('delivery_methods', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->decimal('price', 2)->nullable();
+            $table->decimal('price', 4)->nullable();
         });
     }
 

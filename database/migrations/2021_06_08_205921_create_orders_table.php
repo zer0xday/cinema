@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('delivery_method_id')->references('id')->on('delivery_methods');
             $table->foreignId('movie_id')->references('id')->on('movies')->cascadeOnDelete();
             $table->foreignId('ticket_type_id')->references('id')->on('ticket_types');
-            $table->decimal('total_amount', 2);
+            $table->decimal('total_amount', 9);
             $table->boolean('completed');
         });
     }
