@@ -1930,6 +1930,7 @@ var OrderHandler = /*#__PURE__*/function () {
     this.price = document.querySelector('#order-price');
     this.priceInput = document.querySelector('input[name="total_amount"]');
     this.priceModifiers = document.querySelectorAll('input[data-price]');
+    this.selectedPlaces = document.querySelectorAll('.selected-places');
   }
 
   _createClass(OrderHandler, [{
@@ -1943,15 +1944,22 @@ var OrderHandler = /*#__PURE__*/function () {
     value: function observePrice() {
       var _this = this;
 
-      this.price.innerHTML = '0.00';
-      this.priceModifiers.forEach(function (modifier) {
-        if (modifier.checked) {
-          var actualPrice = parseFloat(_this.price.innerHTML);
-
-          var newPrice = actualPrice + _this.getPrice(modifier);
-
-          _this.price.innerHTML = newPrice.toFixed(2);
+      var selectedPlaces = this.selectedPlaces;
+      var checkedModifiers = document.querySelectorAll('input[data-price]:checked');
+      var newPrice = 0.00;
+      var ticketsPrice = 0.00;
+      var deliveryPrice = 0.00;
+      checkedModifiers.forEach(function (modifier) {
+        if (modifier.name === 'ticket_type') {
+          ticketsPrice = selectedPlaces.length * _this.getPrice(modifier);
         }
+
+        if (modifier.name === 'delivery_method') {
+          deliveryPrice = _this.getPrice(modifier);
+        }
+
+        newPrice = ticketsPrice + deliveryPrice;
+        _this.price.innerHTML = newPrice.toFixed(2);
       });
     }
   }, {
@@ -1996,6 +2004,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ PlacesHandler)
 /* harmony export */ });
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -2006,52 +2026,49 @@ var PlacesHandler = /*#__PURE__*/function () {
   function PlacesHandler() {
     _classCallCheck(this, PlacesHandler);
 
-    this.places = document.querySelectorAll('.place');
-    this.rowInput = document.querySelector('input[name="row"]');
-    this.placeNumberInput = document.querySelector('input[name="place_number"]');
+    this.placesContainer = document.querySelectorAll('.place');
+    this.places = document.querySelector('input[name="places"]');
     this.orderBtn = document.querySelector('#order-btn');
     this.form = document.querySelector('form#order-ticket');
+    this.selectedPlaces = [];
   }
 
   _createClass(PlacesHandler, [{
     key: "handlePlacesData",
     value: function handlePlacesData(element) {
       var forceClear = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-      var rowInput = this.rowInput,
-          placeNumberInput = this.placeNumberInput,
-          orderBtn = this.orderBtn;
-
-      if (forceClear) {
-        rowInput.value = '';
-        placeNumberInput.value = '';
-        orderBtn.classList.add('disabled');
-        return;
-      }
-
+      var orderBtn = this.orderBtn,
+          places = this.places;
       var row = element.getAttribute('data-row');
       var placeNumber = element.getAttribute('data-place-number');
-      rowInput.value = row;
-      placeNumberInput.value = placeNumber;
-      orderBtn.classList.remove('disabled');
+      var key = "".concat(row, ":").concat(placeNumber);
+
+      if (forceClear) {
+        this.selectedPlaces = this.selectedPlaces.filter(function (value) {
+          return value !== key;
+        });
+      } else {
+        this.selectedPlaces.push(key);
+      }
+
+      places.value = this.selectedPlaces;
+      orderBtn.classList.toggle('disabled', !places.value);
     }
   }, {
     key: "handlePlaceSelected",
     value: function handlePlaceSelected(element) {
-      var alreadySelected = document.querySelector('.place.selected');
+      var alreadySelected = document.querySelectorAll('.place.selected');
 
-      if (!alreadySelected) {
-        element.classList.add('selected');
-        this.handlePlacesData(element);
+      if (element.classList.contains('taken')) {
         return;
       }
 
-      if (alreadySelected === element) {
+      if (_toConsumableArray(alreadySelected).includes(element)) {
         element.classList.remove('selected');
         this.handlePlacesData(element, true);
         return;
       }
 
-      alreadySelected.classList.remove('selected');
       element.classList.add('selected');
       this.handlePlacesData(element);
     }
@@ -2060,8 +2077,8 @@ var PlacesHandler = /*#__PURE__*/function () {
     value: function handleSelected() {
       var _this = this;
 
-      var places = this.places;
-      places.forEach(function (place) {
+      var placesContainer = this.placesContainer;
+      placesContainer.forEach(function (place) {
         place.addEventListener('click', function (e) {
           _this.handlePlaceSelected(e.currentTarget);
         });
@@ -2071,10 +2088,9 @@ var PlacesHandler = /*#__PURE__*/function () {
     key: "validateForm",
     value: function validateForm() {
       var form = this.form,
-          rowInput = this.rowInput,
-          placeNumberInput = this.placeNumberInput;
+          places = this.places;
       form.addEventListener('submit', function (e) {
-        if (!rowInput.value || !placeNumberInput.value) {
+        if (!places.value) {
           e.preventDefault();
         }
       });
@@ -2082,13 +2098,12 @@ var PlacesHandler = /*#__PURE__*/function () {
   }, {
     key: "init",
     value: function init() {
-      if (!this.places.length) {
+      if (!this.placesContainer.length) {
         return;
       }
 
       this.handleSelected();
-      this.validateForm(); // trzeba pomyślec nad obsługą kilku miejsc na raz
-      // dodać sprawdzanie fetchem czy miejsce jest juz zarezerwowane przez kogoś innego
+      this.validateForm();
     }
   }]);
 

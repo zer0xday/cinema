@@ -3,6 +3,7 @@ export default class OrderHandler {
         this.price = document.querySelector('#order-price');
         this.priceInput = document.querySelector('input[name="total_amount"]');
         this.priceModifiers = document.querySelectorAll('input[data-price]');
+        this.selectedPlaces = document.querySelectorAll('.selected-places');
     }
 
     getPrice(element) {
@@ -12,15 +13,23 @@ export default class OrderHandler {
     }
 
     observePrice() {
-        this.price.innerHTML = '0.00';
+        const { selectedPlaces } = this;
+        const checkedModifiers = document.querySelectorAll('input[data-price]:checked');
+        let newPrice = 0.00;
+        let ticketsPrice = 0.00;
+        let deliveryPrice = 0.00;
 
-        this.priceModifiers.forEach((modifier) => {
-            if (modifier.checked) {
-                const actualPrice = parseFloat(this.price.innerHTML);
-                const newPrice = actualPrice + this.getPrice(modifier);
-
-                this.price.innerHTML = newPrice.toFixed(2);
+        checkedModifiers.forEach((modifier) => {
+            if (modifier.name === 'ticket_type') {
+                ticketsPrice = (selectedPlaces.length * this.getPrice(modifier));
             }
+
+            if (modifier.name === 'delivery_method') {
+                deliveryPrice = this.getPrice(modifier);
+            }
+
+            newPrice = ticketsPrice + deliveryPrice;
+            this.price.innerHTML = newPrice.toFixed(2);
         });
     }
 

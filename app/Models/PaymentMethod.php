@@ -9,6 +9,8 @@ class PaymentMethod extends Model
 {
     use HasFactory;
 
+    const TRANSFER_PAYMENT_METHOD = 'Przelew';
+
     protected $table = 'payment_methods';
     public $timestamps = false;
 }

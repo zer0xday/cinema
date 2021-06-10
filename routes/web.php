@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\AppController;
+use App\Http\Controllers\ConfirmationController;
+use App\Http\Controllers\MoviesController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PlacesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [AppController::class, 'movies'])->name('movies');
-Route::post('places', [AppController::class, 'places'])->name('places');
-Route::post('order', [AppController::class, 'order'])->name('order');
-Route::post('store', [AppController::class, 'store'])->name('store');
+Route::get('/', [MoviesController::class, 'index'])->name('movies');
+Route::get('places', [PlacesController::class, 'index'])->name('places');
+Route::get('order', [OrderController::class, 'index'])->name('order');
+Route::get('confirmation', [ConfirmationController::class, 'index'])->name('confirmation');
+
+Route::prefix('store')->group(function () {
+    Route::post('movie', [MoviesController::class, 'store'])->name('storeMovie');
+    Route::post('places', [PlacesController::class, 'store'])->name('storePlaces');
+    Route::post('order', [OrderController::class, 'store'])->name('storeOrder');
+});

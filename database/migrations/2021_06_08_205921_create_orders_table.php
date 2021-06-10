@@ -15,10 +15,10 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->references('id')->on('customers')->cascadeOnDelete();
+            $table->foreignId('customer_id')->references('id')->on('customers');
             $table->foreignId('payment_method_id')->references('id')->on('payment_methods');
             $table->foreignId('delivery_method_id')->references('id')->on('delivery_methods');
-            $table->foreignId('movie_id')->references('id')->on('movies')->cascadeOnDelete();
+            $table->foreignId('movie_id')->references('id')->on('movies');
             $table->foreignId('ticket_type_id')->references('id')->on('ticket_types');
             $table->decimal('total_amount', 9);
             $table->boolean('completed');

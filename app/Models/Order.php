@@ -10,15 +10,24 @@ class Order extends Model
 {
     use HasFactory;
 
-    private const TRANSFER_PAYMENT_METHOD = 'Przelew';
+    const STORE_ORDER_RULES = [
+        'full_name' => ['required'],
+        'email' => ['required', 'email'],
+        'city' => ['required'],
+        'address' => ['required'],
+        'postal_code' => ['required', 'regex:/[0-9]{2}-[0-9]{3}/'],
+        'payment_method' => ['required', 'numeric'],
+        'ticket_type' => ['required', 'numeric'],
+        'delivery_method' => ['required', 'numeric']
+    ];
 
     protected $table = 'orders';
     public $timestamps = false;
     protected $primaryKey = 'id';
     public $incrementing = true;
-    public $fillable = ['*'];
+    public $guarded = ['id'];
 
-    public function fetchOrderData(array $validatedData): array
+    public function fetchOrderData(array $validatedData, int $placesQty): array
     {
         $orderData = [];
         $orderData['payment_method_id'] = $this->validateExistence(
@@ -33,7 +42,7 @@ class Order extends Model
         $orderData['ticket_type_id'] = $this->validateExistence(
             TicketType::class, $validatedData, 'ticket_type'
         );
-        $orderData['total_amount'] = $this->calculateTotalAmount($validatedData);
+        $orderData['total_amount'] = $this->calculateTotalAmount($validatedData, $placesQty);
         $orderData['completed'] = $this->isOrderCompleted($validatedData);
 
         return $orderData;
@@ -43,15 +52,16 @@ class Order extends Model
     {
         $data = PaymentMethod::query()->findOrFail($validatedData['payment_method']);
 
-        return $data['title'] === self::TRANSFER_PAYMENT_METHOD;
+        return $data['title'] === PaymentMethod::TRANSFER_PAYMENT_METHOD;
     }
 
-    protected function calculateTotalAmount(array $validatedData): string
+    protected function calculateTotalAmount(array $validatedData, int $placesQty): string
     {
         $deliveryMethodPrice = $this->getRawPrice(DeliveryMethod::class, $validatedData, 'delivery_method');
         $ticketTypePrice = $this->getRawPrice(TicketType::class, $validatedData, 'ticket_type');
+        $operation = ($placesQty * $ticketTypePrice) + $deliveryMethodPrice;
 
-        return number_format(($deliveryMethodPrice + $ticketTypePrice), 2);
+        return number_format($operation, 2);
     }
 
     protected function getRawPrice(string $model, array $validatedData, string $key): float
@@ -64,6 +74,10 @@ class Order extends Model
 
     protected function validateExistence(string $model, array $validatedData, string $value): string|int
     {
+        if (empty($validatedData[$value])) {
+            throw new \UnexpectedValueException(__('Wprowadzona wartość jest niepoprawna'));
+        }
+
         /** @var Model $model */
         $exists = $model::query()->find($validatedData[$value])->exists();
 

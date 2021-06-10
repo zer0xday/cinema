@@ -127,6 +127,7 @@ nav#navigation {
 }
 #places .places-row-container .places-container .place.taken {
   background: #acadac;
+  cursor: not-allowed;
 }
 #places .places-row-container .places-container .place.selected {
   background: #f07b41;
@@ -135,4 +136,12 @@ nav#navigation {
 .next-step {
   margin-top: 25px;
   text-align: center;
+}
+
+#confirmation .info-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

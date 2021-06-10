@@ -1,57 +1,52 @@
 export default class PlacesHandler {
     constructor() {
-        this.places = document.querySelectorAll('.place');
-        this.rowInput = document.querySelector('input[name="row"]');
-        this.placeNumberInput = document.querySelector('input[name="place_number"]');
+        this.placesContainer = document.querySelectorAll('.place');
+        this.places = document.querySelector('input[name="places"]');
         this.orderBtn = document.querySelector('#order-btn');
         this.form = document.querySelector('form#order-ticket');
+        this.selectedPlaces = [];
     }
 
     handlePlacesData(element, forceClear = false) {
-        const {rowInput, placeNumberInput, orderBtn} = this;
-
-        if (forceClear) {
-            rowInput.value = '';
-            placeNumberInput.value = '';
-            orderBtn.classList.add('disabled');
-
-            return;
-        }
+        const {orderBtn, places} = this;
 
         const row = element.getAttribute('data-row');
         const placeNumber = element.getAttribute('data-place-number');
+        const key = `${row}:${placeNumber}`;
 
-        rowInput.value = row;
-        placeNumberInput.value = placeNumber;
-        orderBtn.classList.remove('disabled');
+        if (forceClear) {
+            this.selectedPlaces = this.selectedPlaces.filter((value) => value !== key);
+        } else {
+            this.selectedPlaces.push(key);
+        }
+
+        places.value = this.selectedPlaces;
+
+        orderBtn.classList.toggle('disabled', !places.value);
     }
 
     handlePlaceSelected(element) {
-        const alreadySelected = document.querySelector('.place.selected');
+        const alreadySelected = document.querySelectorAll('.place.selected');
 
-        if (!alreadySelected) {
-            element.classList.add('selected');
-            this.handlePlacesData(element);
-
+        if (element.classList.contains('taken')) {
             return;
         }
 
-        if (alreadySelected === element) {
+        if ([...alreadySelected].includes(element)) {
             element.classList.remove('selected');
             this.handlePlacesData(element, true);
 
             return;
         }
 
-        alreadySelected.classList.remove('selected');
         element.classList.add('selected');
         this.handlePlacesData(element);
     }
 
     handleSelected() {
-        const {places} = this;
+        const {placesContainer} = this;
 
-        places.forEach((place) => {
+        placesContainer.forEach((place) => {
             place.addEventListener('click', (e) => {
                 this.handlePlaceSelected(e.currentTarget);
             });
@@ -59,23 +54,21 @@ export default class PlacesHandler {
     }
 
     validateForm() {
-        const {form, rowInput, placeNumberInput} = this;
+        const {form, places} = this;
 
         form.addEventListener('submit', (e) => {
-            if (!rowInput.value || !placeNumberInput.value) {
+            if (!places.value) {
                 e.preventDefault();
             }
         });
     }
 
     init() {
-        if (!this.places.length) {
+        if (!this.placesContainer.length) {
             return;
         }
 
         this.handleSelected();
         this.validateForm();
-        // trzeba pomyślec nad obsługą kilku miejsc na raz
-        // dodać sprawdzanie fetchem czy miejsce jest juz zarezerwowane przez kogoś innego
     }
 }

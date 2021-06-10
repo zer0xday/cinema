@@ -58,6 +58,7 @@
 
                 &.taken {
                     background: $takenColor;
+                    cursor: not-allowed;
                 }
 
                 &.selected {
@@ -71,4 +72,14 @@
 .next-step {
     margin-top: 25px;
     text-align: center;
+}
+
+#confirmation {
+    .info-container {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }

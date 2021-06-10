@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <section class="movies-container">
-        <form action="{{ route('places') }}" method="POST">
+        <h3 class="center">Wybierz film</h3>
+        <form action="{{ route('storeMovie') }}" method="POST">
             @csrf
             @foreach ($movies as $movie)
                 <p class="center">
