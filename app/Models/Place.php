@@ -14,16 +14,6 @@ class Place extends Model
     protected $table = 'places';
     public $timestamps = false;
 
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function customersPlaces(): HasOne
-    {
-        return $this->hasOne(CustomerPlace::class, 'place_id', 'id');
-    }
-
     public function fetchPlaces(array $validatedData): array
     {
         $data = explode(',', $validatedData['places']);

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <section id="places-section">
-        <h3 class="center">Wybierz miejsce</h3>
+        <h3 class="center">Wybierz miejsca</h3>
         <div id="legend">
             <div class="legend-item">
                 <div class="available legend-colorbox"></div>

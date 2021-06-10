@@ -62,6 +62,11 @@ section {
 nav#navigation {
   background: #26a69a;
 }
+nav#navigation .nav-wrapper .reservations {
+  font-size: 24px;
+  padding: 0 15px;
+  background: #25857c;
+}
 
 .movies-container {
   margin-top: 35px;

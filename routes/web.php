@@ -4,6 +4,7 @@ use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PlacesController;
+use App\Http\Controllers\ReservationsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ Route::get('/', [MoviesController::class, 'index'])->name('movies');
 Route::get('places', [PlacesController::class, 'index'])->name('places');
 Route::get('order', [OrderController::class, 'index'])->name('order');
 Route::get('confirmation', [ConfirmationController::class, 'index'])->name('confirmation');
+Route::get('reservations', [ReservationsController::class, 'index'])->name('reservations');
 
 Route::prefix('store')->group(function () {
     Route::post('movie', [MoviesController::class, 'store'])->name('storeMovie');
