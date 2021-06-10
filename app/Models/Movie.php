@@ -9,7 +9,6 @@ class Movie extends Model
 {
     use HasFactory;
 
-    protected $table = 'customers';
-    protected $fillable = ['*'];
+    protected $table = 'movies';
     public $timestamps = false;
 }

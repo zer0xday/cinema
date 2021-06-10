@@ -14,9 +14,15 @@ class CreateCustomersPlacesTable extends Migration
     public function up()
     {
         Schema::create('customers_places', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('customer_id')->references('id')->on('customers')->cascadeOnDelete();
-            $table->foreignId('place_id')->references('id')->on('places')->cascadeOnDelete();
+            $table->foreignId('customer_id')
+                ->references('id')
+                ->on('customers')
+                ->cascadeOnDelete();
+            $table->foreignId('place_id')
+                ->references('id')
+                ->on('places'
+                )->cascadeOnDelete();
+            $table->primary(['customer_id', 'place_id']);
         });
     }
 

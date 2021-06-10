@@ -1838,9 +1838,40 @@ module.exports = {
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _places_handler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./places-handler */ "./resources/js/places-handler.js");
+/* harmony import */ var _order_handler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./order-handler */ "./resources/js/order-handler.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
+
+
+
+var App = /*#__PURE__*/function () {
+  function App() {
+    _classCallCheck(this, App);
+  }
+
+  _createClass(App, [{
+    key: "init",
+    value: function init() {
+      new _places_handler__WEBPACK_IMPORTED_MODULE_0__.default().init();
+      new _order_handler__WEBPACK_IMPORTED_MODULE_1__.default().init();
+    }
+  }]);
+
+  return App;
+}();
+
+new App().init();
 
 /***/ }),
 
@@ -1872,6 +1903,199 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/order-handler.js":
+/*!***************************************!*\
+  !*** ./resources/js/order-handler.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ OrderHandler)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var OrderHandler = /*#__PURE__*/function () {
+  function OrderHandler() {
+    _classCallCheck(this, OrderHandler);
+
+    this.price = document.querySelector('#order-price');
+    this.priceInput = document.querySelector('input[name="total_amount"]');
+    this.priceModifiers = document.querySelectorAll('input[data-price]');
+  }
+
+  _createClass(OrderHandler, [{
+    key: "getPrice",
+    value: function getPrice(element) {
+      var parsedPrice = parseFloat(element.getAttribute('data-price'));
+      return !isNaN(parsedPrice) ? parsedPrice : 0.00;
+    }
+  }, {
+    key: "observePrice",
+    value: function observePrice() {
+      var _this = this;
+
+      this.price.innerHTML = '0.00';
+      this.priceModifiers.forEach(function (modifier) {
+        if (modifier.checked) {
+          var actualPrice = parseFloat(_this.price.innerHTML);
+
+          var newPrice = actualPrice + _this.getPrice(modifier);
+
+          _this.price.innerHTML = newPrice.toFixed(2);
+        }
+      });
+    }
+  }, {
+    key: "calculateTotalAmount",
+    value: function calculateTotalAmount() {
+      var _this2 = this;
+
+      var priceModifiers = this.priceModifiers;
+      priceModifiers.forEach(function (priceModifier) {
+        priceModifier.addEventListener('click', function () {
+          _this2.observePrice();
+        });
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      if (!document.querySelector('#order-form')) {
+        return;
+      }
+
+      this.observePrice();
+      this.calculateTotalAmount();
+    }
+  }]);
+
+  return OrderHandler;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/js/places-handler.js":
+/*!****************************************!*\
+  !*** ./resources/js/places-handler.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PlacesHandler)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var PlacesHandler = /*#__PURE__*/function () {
+  function PlacesHandler() {
+    _classCallCheck(this, PlacesHandler);
+
+    this.places = document.querySelectorAll('.place');
+    this.rowInput = document.querySelector('input[name="row"]');
+    this.placeNumberInput = document.querySelector('input[name="place_number"]');
+    this.orderBtn = document.querySelector('#order-btn');
+    this.form = document.querySelector('form#order-ticket');
+  }
+
+  _createClass(PlacesHandler, [{
+    key: "handlePlacesData",
+    value: function handlePlacesData(element) {
+      var forceClear = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var rowInput = this.rowInput,
+          placeNumberInput = this.placeNumberInput,
+          orderBtn = this.orderBtn;
+
+      if (forceClear) {
+        rowInput.value = '';
+        placeNumberInput.value = '';
+        orderBtn.classList.add('disabled');
+        return;
+      }
+
+      var row = element.getAttribute('data-row');
+      var placeNumber = element.getAttribute('data-place-number');
+      rowInput.value = row;
+      placeNumberInput.value = placeNumber;
+      orderBtn.classList.remove('disabled');
+    }
+  }, {
+    key: "handlePlaceSelected",
+    value: function handlePlaceSelected(element) {
+      var alreadySelected = document.querySelector('.place.selected');
+
+      if (!alreadySelected) {
+        element.classList.add('selected');
+        this.handlePlacesData(element);
+        return;
+      }
+
+      if (alreadySelected === element) {
+        element.classList.remove('selected');
+        this.handlePlacesData(element, true);
+        return;
+      }
+
+      alreadySelected.classList.remove('selected');
+      element.classList.add('selected');
+      this.handlePlacesData(element);
+    }
+  }, {
+    key: "handleSelected",
+    value: function handleSelected() {
+      var _this = this;
+
+      var places = this.places;
+      places.forEach(function (place) {
+        place.addEventListener('click', function (e) {
+          _this.handlePlaceSelected(e.currentTarget);
+        });
+      });
+    }
+  }, {
+    key: "validateForm",
+    value: function validateForm() {
+      var form = this.form,
+          rowInput = this.rowInput,
+          placeNumberInput = this.placeNumberInput;
+      form.addEventListener('submit', function (e) {
+        if (!rowInput.value || !placeNumberInput.value) {
+          e.preventDefault();
+        }
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      if (!this.places.length) {
+        return;
+      }
+
+      this.handleSelected();
+      this.validateForm(); // trzeba pomyślec nad obsługą kilku miejsc na raz
+      // dodać sprawdzanie fetchem czy miejsce jest juz zarezerwowane przez kogoś innego
+    }
+  }]);
+
+  return PlacesHandler;
+}();
+
+
 
 /***/ }),
 
@@ -19355,6 +19579,18 @@ process.umask = function() { return 0; };
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
 /******/ 		};
 /******/ 	})();
 /******/ 	

@@ -47,10 +47,92 @@ body, html {
   background: #1a202c;
 }
 
-h1, h2, h3, p, strong, div {
+h1, h2, h3, p, strong, div, input {
   color: #FFFFFF;
+}
+
+input {
+  padding-left: 10px;
+}
+
+section {
+  margin-top: 40px;
 }
 
 nav#navigation {
   background: #26a69a;
+}
+
+.movies-container {
+  margin-top: 35px;
+}
+
+#legend {
+  display: flex;
+  justify-content: center;
+  flex-basis: 100%;
+  margin-top: 25px;
+}
+#legend .legend-item {
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+}
+#legend .legend-item .legend-colorbox {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+}
+#legend .legend-item .available {
+  background: #26a69a;
+}
+#legend .legend-item .taken {
+  background: #acadac;
+}
+#legend .legend-item .selected {
+  background: #f07b41;
+}
+
+#places {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 35px;
+}
+#places .places-row-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-basis: 100%;
+}
+#places .places-row-container .row-number {
+  font-size: 24px;
+  width: 50px;
+}
+#places .places-row-container .places-container {
+  display: grid;
+}
+#places .places-row-container .places-container .row {
+  margin: 0;
+}
+#places .places-row-container .places-container .place {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 5px;
+  padding: 15px 20px;
+  background: #26a69a;
+}
+#places .places-row-container .places-container .place.taken {
+  background: #acadac;
+}
+#places .places-row-container .places-container .place.selected {
+  background: #f07b41;
+}
+
+.next-step {
+  margin-top: 25px;
+  text-align: center;
 }

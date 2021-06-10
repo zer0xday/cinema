@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', [AppController::class, 'movies'])->name('movies');
+Route::post('places', [AppController::class, 'places'])->name('places');
+Route::post('order', [AppController::class, 'order'])->name('order');
+Route::post('store', [AppController::class, 'store'])->name('store');

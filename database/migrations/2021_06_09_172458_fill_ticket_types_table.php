@@ -2,10 +2,19 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlacesTable extends Migration
+class FillTicketTypesTable extends Migration
 {
+    private const TABLE_NAME = 'ticket_types';
+    private const DATA = [
+        [
+            'title' => 'Normalny',
+            'price' => 19.90
+        ]
+    ];
+
     /**
      * Run the migrations.
      *
@@ -13,11 +22,7 @@ class CreatePlacesTable extends Migration
      */
     public function up()
     {
-        Schema::create('places', function (Blueprint $table) {
-            $table->id();
-            $table->char('row', 1);
-            $table->char('number', 1);
-        });
+        DB::table(self::TABLE_NAME)->insert(self::DATA);
     }
 
     /**
@@ -27,6 +32,6 @@ class CreatePlacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('places');
+        DB::table(self::TABLE_NAME)->truncate();
     }
 }

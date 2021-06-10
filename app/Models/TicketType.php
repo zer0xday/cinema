@@ -11,4 +11,6 @@ class TicketType extends Model
 
     protected $table = 'ticket_types';
     public $timestamps = false;
+    protected $primaryKey = 'id';
+    public $incrementing = true;
 }

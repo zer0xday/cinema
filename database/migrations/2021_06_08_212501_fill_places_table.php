@@ -17,8 +17,13 @@ class FillPlacesTable extends Migration
     {
         $data = [];
 
-        foreach (range(1, 50) as $number) {
-            $data[]['title'] = $number;
+        foreach (range(1, 5) as $row) {
+            foreach (range(1, 9) as $number) {
+                $data[] = [
+                    'row' => $row,
+                    'number' => $number
+                ];
+            }
         }
 
         DB::table(self::TABLE_NAME)->insert($data);

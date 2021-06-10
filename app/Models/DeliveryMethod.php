@@ -10,5 +10,7 @@ class DeliveryMethod extends Model
     use HasFactory;
 
     protected $table = 'delivery_methods';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
     public $timestamps = false;
 }

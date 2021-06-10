@@ -2,6 +2,14 @@ body, html {
     background: $bgColor;
 }
 
-h1, h2, h3, p, strong, div {
+h1, h2, h3, p, strong, div, input {
     color: $textColor;
+}
+
+input {
+    padding-left: 10px;
+}
+
+section {
+    margin-top: 40px;
 }

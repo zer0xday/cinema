@@ -1,0 +1,74 @@
+.movies-container {
+    margin-top: 35px;
+}
+
+#legend {
+    display: flex;
+    justify-content: center;
+    flex-basis: 100%;
+    margin-top: 25px;
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin: 0 20px;
+
+        .legend-colorbox {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+        }
+
+        .available { background: $primaryColor; }
+        .taken { background: $takenColor; }
+        .selected { background: $selectedColor; }
+    }
+}
+
+#places {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 35px;
+
+    .places-row-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-basis: 100%;
+
+        .row-number {
+            font-size: 24px;
+            width: 50px;
+        }
+
+        .places-container {
+            display: grid;
+
+            .row {
+                margin: 0;
+            }
+
+            .place {
+                user-select: none;
+                cursor: pointer;
+                font-weight: bold;
+                margin: 5px;
+                padding: 15px 20px;
+                background: $primaryColor;
+
+                &.taken {
+                    background: $takenColor;
+                }
+
+                &.selected {
+                    background: $selectedColor;
+                }
+            }
+        }
+    }
+}
+
+.next-step {
+    margin-top: 25px;
+    text-align: center;
+}
