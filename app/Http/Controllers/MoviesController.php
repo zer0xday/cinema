@@ -18,7 +18,7 @@ class MoviesController extends Controller
 
     public function index(Request $request): View
     {
-        $request->session()->forget(['movies', 'places']);
+        $request->session()->forget(['movie', 'places']);
 
         return view('movies', [
             'movies' => $this->movie->all()

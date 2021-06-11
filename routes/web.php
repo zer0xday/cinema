@@ -24,7 +24,7 @@ Route::get('order', [OrderController::class, 'index'])
     ->middleware('session')
     ->name('order');
 Route::get('confirmation', [ConfirmationController::class, 'index'])
-    ->middleware(['session', 'referer'])
+    ->middleware(['referer', 'session'])
     ->name('confirmation');
 Route::get('reservations', [ReservationsController::class, 'index'])->name('reservations');
 

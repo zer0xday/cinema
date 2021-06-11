@@ -3,15 +3,6 @@
     <section id="order-form">
         <h3 class="center">Zamów</h3>
         <div class="row">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
             <form class="col s6" method="POST" action="{{ route('storeOrder') }}">
                 <h5>Dane zamawiającego</h5>
                 @csrf

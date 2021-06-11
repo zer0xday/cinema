@@ -168,3 +168,22 @@ nav#navigation .nav-wrapper .reservations {
 #reservations {
   margin-top: 50px;
 }
+
+.errors-container {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+.errors-container .alert-danger ul > li {
+  position: relative;
+  background: rgba(237, 31, 17, 0.75);
+  padding: 10px 25px 10px 10px;
+  margin-bottom: 5px;
+  max-width: 350px;
+}
+.errors-container .alert-danger ul > li strong {
+  cursor: pointer;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}

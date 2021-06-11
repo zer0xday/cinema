@@ -15,6 +15,7 @@
         @include('navigation.navi')
         @yield('content')
     </main>
+    @include('errors')
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

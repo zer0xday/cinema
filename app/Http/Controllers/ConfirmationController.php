@@ -22,7 +22,7 @@ class ConfirmationController extends Controller
         $places = $request->session()->get('places');
         $movieData = $this->movie->findOrFail($movieId);
 
-        $request->session()->forget(['movies', 'places']);
+        $request->session()->forget(['movie', 'places']);
 
         return view('confirmation', [
             'movie' => $movieData,
