@@ -20,12 +20,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MoviesController::class, 'index'])->name('movies');
 Route::get('places', [PlacesController::class, 'index'])->name('places');
-Route::get('order', [OrderController::class, 'index'])->name('order');
-Route::get('confirmation', [ConfirmationController::class, 'index'])->name('confirmation');
+Route::get('order', [OrderController::class, 'index'])
+    ->middleware('session')
+    ->name('order');
+Route::get('confirmation', [ConfirmationController::class, 'index'])
+    ->middleware(['session', 'referer'])
+    ->name('confirmation');
 Route::get('reservations', [ReservationsController::class, 'index'])->name('reservations');
 
 Route::prefix('store')->group(function () {
-    Route::post('movie', [MoviesController::class, 'store'])->name('storeMovie');
-    Route::post('places', [PlacesController::class, 'store'])->name('storePlaces');
-    Route::post('order', [OrderController::class, 'store'])->name('storeOrder');
+    Route::post('movie', [MoviesController::class, 'store'])
+        ->name('storeMovie');
+    Route::post('places', [PlacesController::class, 'store'])
+        ->name('storePlaces');
+    Route::post('order', [OrderController::class, 'store'])
+        ->middleware('session')
+        ->name('storeOrder');
 });

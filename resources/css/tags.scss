@@ -13,3 +13,20 @@ input {
 section {
     margin-top: 40px;
 }
+
+table {
+    color: white;
+
+    th {
+        font-weight: bold;
+        border-bottom: 3px solid $primaryColor;
+    }
+
+    tr {
+        border-bottom-color: $primaryColor;
+    }
+
+    &.highlight > tbody > tr:hover {
+        background-color: $primaryColor !important;
+    }
+}

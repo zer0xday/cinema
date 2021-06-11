@@ -59,6 +59,20 @@ section {
   margin-top: 40px;
 }
 
+table {
+  color: white;
+}
+table th {
+  font-weight: bold;
+  border-bottom: 3px solid #26a69a;
+}
+table tr {
+  border-bottom-color: #26a69a;
+}
+table.highlight > tbody > tr:hover {
+  background-color: #26a69a !important;
+}
+
 nav#navigation {
   background: #26a69a;
 }
@@ -149,4 +163,8 @@ nav#navigation .nav-wrapper .reservations {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#reservations {
+  margin-top: 50px;
 }
